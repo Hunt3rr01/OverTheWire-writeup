@@ -10,7 +10,9 @@ Jump to:
 Your task is to connect to the remore host using SSH protocol. Address, port and credentials are provided in level description.
 
 The way i recommend is using Linux shell command:
+~~~bash
 ssh username@host_address -p port_number
+~~~ 
 
 ![image missing?](./content/bandit00.png)
 
@@ -30,12 +32,12 @@ We can bypass this by using relative path to the file. Try using "./", which mea
 
 ![image missing?](./content/bandit02.png)
 
-And now we have the password for bantit2 user.
+And now we have the password for bandit2 user.
 
 ## Level 2 -> Level 3
 To obtain password, we need to open file called "--spaces in this filename--". Trying to use it directly will not work. 
 Firstly, "--" is also recognized as command parameter, but we already know how to bypass this. Secondly, each space will break filename into separate parts. 
-You can tell the shell to include space as part of the string, by using escape character "\".
+You can tell the shell to include space as part of the string, by using escape character "\\".
 
 ![image missing?](./content/bandit03.png)
 
@@ -49,7 +51,7 @@ We have to look for a hidden file in "inhere" directory. Let's get inside and li
 We are ready to go further.
 
 ## Level 4 -> Level 5
-This time we have to find file containing password. There are several files, and description says that we will find credentials in the unly human-readable file. Humans can read text, so we are looking for text file, right?
+This time we have to find file containing password. There are several files, and description says that we will find credentials in the only human-readable file. Humans can read text, so we are looking for text file, right?
 Use "file" command to find out what is type of specific file. Do you have to do it for every file? No, you can use * to check all files at once. Remember to use './'!
 There is one ASCII text file, and thats our password.
 
