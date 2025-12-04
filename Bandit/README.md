@@ -14,7 +14,11 @@ You definitelly should try to beat this game at your own. Use this writeup only 
 - [Level 7](#level-7---level-8)
 - [Level 8](#level-8---level-9)
 - [Level 9](#level-9---level-10)
-
+- [Level 10](#level-10---level-11)
+- [Level 11](#level-11---level-12)
+- [Level 12](#level-12---level-13)
+- [Level 13](#level-13---level-14)
+- [Level 14](#level-14---level-15)
 
 ## Level 0
 Your task is to connect to the remore host using SSH protocol. Address, port and credentials are provided in level description.
@@ -114,4 +118,82 @@ And another one data.txt file. But is it text? No. Printing it in terminal with 
 ![image missing?](./content/bandit10.png)
 
 First 10 challenges done, let's go further. 
+
+## Level 10 -> Level 11
+Password in data.txt file is encoded with base64. The fastest way to decode this is using linux command "base64 --decode". Below command is firstly printing text from data.txt, then it decode it. 
+
+~~~bash
+cat data.txt | base64 --decode
+~~~
+
+![image missing?](./content/bandit11.png)
+
+## Level 11 -> Level 12
+This time a-z and A-Z characters from password have been rotated by 13 posiotions. It's called ROT13 cipher. You 
+can use online tool [CyberChef](https://cyberchef.org/), select ROT13 and paste data.txt. 
+
+![image missing?](./content/bandit12.png)
+
+Thats it.
+
+## Level 12 -> Level 13
+We are dealing with hexdump of file that have been compressed multiple time. Description says that temporary directory will be usefull, so lets do it using "mktemp -d" and copy data.txt into it. Firstly lets see whats in this file. 
+![image missing?](./content/bandit13_1.png)
+
+We will be using "xxd" command to convert this hexdump into archive. First we need to find what type of archive we need to get. Something called [Magic Bytes](https://https://en.wikipedia.org/wiki/List_of_file_signatures) will help. Take a look at:
+~~~bash
+00000000: 1f8b 0808 2817 ee68 0203 6461 7461 322e  ....(..h..data2.
+~~~
+1F 8B match GZIP. Now we can recover this archive using xxd and unzip them using "gunzip".
+
+~~~bash
+xxd -r data.txt > data.gz
+gunzip data.gz
+~~~
+
+We know that it was compressed multiple times, we should check filetype and decompress it again and again.
+~~~bash
+bzip2 -d data
+mv data.out data.gz
+gunzip data.gz
+tar -xf data
+tar -xf data5.bin
+bzip2 -d data6.bin
+tar -xf data6.bin.out
+mv data8.bin data8.gz
+~~~
+And there will be data8 file with password for bandit 13.
+
+![image missing?](./content/bandit13_2.png)
+
+## Level 13 -> Level 14
+There is no task for this one, but we are provided with ssh key for bandit14. We have to download it to our local OS, and use it to login into bandit14 account. You can download it using scp command:
+
+~~~bash
+scp -P 2220 bandit13@bandit.labs.overthewire.org:/home/bandit13/sshkey.private .
+~~~
+
+![image missing?](./content/bandit14.png)
+
+Trying to login using "-i sshkey.private" (i've renamed it into bandit14.private) will fail because of default permissions. You can fix that by using "chmod 600 sshkey.private) and then you will be able to login into bandit14 account. 
+
+IMPORTANT NOTE
+We have to save bandit14 user password for later use. Description says that it is in /etc/bandit_pass/bandit14. 
+
+~~~bash
+ssh bandit14@bandit.labs.overthewire.org -p 2220 -i sshkey.private
+~~~
+
+## Level 14 -> Level 15
+We will obtain bandit15 password after submitting bandit14 password (/etc/bandit_pass/bandit14) into port 30000 on localhost. To "talk" with service running on port 30000 we can use netcat. Paste bandit14 password, and you will receive bandit15 credentials.
+
+~~~bash
+nc 127.0.0.1 30000
+~~~
+
+
+
+
+
+
 
