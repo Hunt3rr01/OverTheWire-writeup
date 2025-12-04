@@ -140,7 +140,7 @@ Thats it.
 We are dealing with hexdump of file that have been compressed multiple time. Description says that temporary directory will be usefull, so lets do it using "mktemp -d" and copy data.txt into it. Firstly lets see whats in this file. 
 ![image missing?](./content/bandit13_1.png)
 
-We will be using "xxd" command to convert this hexdump into archive. First we need to find what type of archive we need to get. Something called [Magic Bytes](https://https://en.wikipedia.org/wiki/List_of_file_signatures) will help. Take a look at:
+We will be using "xxd" command to convert this hexdump into archive. First we need to find what type of archive we need to get. Something called [Magic Bytes](https://en.wikipedia.org/wiki/List_of_file_signatures) will help. Take a look at:
 ~~~bash
 00000000: 1f8b 0808 2817 ee68 0203 6461 7461 322e  ....(..h..data2.
 ~~~
