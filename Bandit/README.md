@@ -190,7 +190,7 @@ We will obtain bandit15 password after submitting bandit14 password (/etc/bandit
 ~~~bash
 nc 127.0.0.1 30000
 ~~~
-
+![image missing?](./content/bandit15.png)
 
 
 
