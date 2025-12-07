@@ -19,6 +19,12 @@ You definitelly should try to beat this game at your own. Use this writeup only 
 - [Level 12](#level-12---level-13)
 - [Level 13](#level-13---level-14)
 - [Level 14](#level-14---level-15)
+- [Level 15](#level-15---level-16)
+- [Level 16](#level-16---level-17)
+- [Level 17](#level-17---level-18)
+- [Level 18](#level-18---level-19)
+- [Level 19](#level-19---level-20)
+
 
 ## Level 0
 Your task is to connect to the remore host using SSH protocol. Address, port and credentials are provided in level description.
@@ -213,7 +219,7 @@ There are 5 open ports. Now we have to find out which one is using TLS/SSL encry
 
 ![image missing?](./content/bandit17_2.png)
 
-Second one returned RSA key, which we will use to login into bandit17 account. Just like on one of previous challenges.
+Second one returned RSA key, which we will use to login into bandit17 account. Just like on one of previous challenges. Copy whole output into file on your local machine, name it bandit18.private and set 600 permissions using chmod.
 
 ## Bandit 17 -> Bandit 18
 Description says, that our password is the only line that have been change between passwords.old and passwords.new files. Using "diff" tool will be very usefull.
