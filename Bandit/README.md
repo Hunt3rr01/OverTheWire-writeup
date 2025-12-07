@@ -192,7 +192,48 @@ nc 127.0.0.1 30000
 ~~~
 ![image missing?](./content/bandit15.png)
 
+## Level 15 -> Level 16
+Another challenge about submitting password to something listening on 30001 port. This time it is required to use SSL/TLS encryption. I recommend using "ncat" tool, which offer "--ssl" flag. 
+~~~bash
+ncat 127.0.0.1 30001 --ssl
+~~~
+![image missing?](./content/bandit16.png)
 
+Pretty easy, right?
+## Level 16 -> Level 17:
+And another one. We are provided with port range that we have to check: 31000-32000. We will be using nmap to scan active ports. Use "-sT" flag to use TCP Connect scan. 
+
+~~~bash
+nmap -sT -p 31000-32000 127.0.0.1
+~~~
+
+![image missing?](./content/bandit17_1.png)
+
+There are 5 open ports. Now we have to find out which one is using TLS/SSL encryption. Nmap offer script to do this. Perform another scan, this time add "--script ssl-enum-ciphers". Now we have 2 ports that offer SSL encryption: 31518 and 31790. Lets check them both.
+
+![image missing?](./content/bandit17_2.png)
+
+Second one returned RSA key, which we will use to login into bandit17 account. Just like on one of previous challenges.
+
+## Bandit 17 -> Bandit 18
+Description says, that our password is the only line that have been change between passwords.old and passwords.new files. Using "diff" tool will be very usefull.
+
+![image missing?](./content/bandit18.png)
+
+## Bandit 18 -> Bandit 19
+In this challenge, password sould be in readme file. However, we are immediately logged out if we try to login using ssh. We know which file we need to read, so lets try execute command through ssh instead of loging in. To do this, simply add command that you want to exetute right after ssh flags.
+
+![image missing?](./content/bandit19.png)
+
+It worked!
+## Bandit 19 -> Bandit 20
+To obtain the password, we need to use setuid binary on /etc/bandit_pass directory. First, we have to execute binary without arguments to find out how to use it. We want to print bandit20 file from /etc/bandit_pass directory, so we can do it as bandit20 user if we use bandit20-do script. 
+
+~~~bash
+./bandit20-do cat /etc/bandit_pass/bandit20
+~~~
+
+![image missing?](./content/bandit20.png)
 
 
 
