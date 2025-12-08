@@ -241,6 +241,70 @@ To obtain the password, we need to use setuid binary on /etc/bandit_pass directo
 
 ![image missing?](./content/bandit20.png)
 
+## Bandit 20 -> Bandit 21
+[Tmux](https://www.redhat.com/en/blog/introduction-tmux-linux) is extreme usefull to solve this challenge. Use it to split terminal view. This time binary read password from port that we specify, and if it match bandit20 password, it will return bandit21 credential. Lest begin with opening netcat server at port 25252 using "nc -lp 25252". Then from second terminal, use provided binary with 25252 parameter. Back to netcat, paste bandit20 password and press ENTER. Thats all.
+
+![image missing?](./content/bandit21.png)
+
+## Bandit 21 -> Bandit 22
+In this task we have to investigate cron, and find out which command is being executed. You can do this by viewing config files. I used "cat /etc/cron.d/* | grep \*", to firstly check which one is being executed in regular intervals. There is one script that looks interesting - "/usr/bin/cronjob_bandit22.sh". Opening it reveal, that bandit22 password is stored in one of files in /tmp directory. And there it is - bandit22 password.
+
+![image missing?](./content/bandit22.png)
+
+## Bandit 22 -> Bandit 23
+From previous task we know, that there is another script - "/usr/bin/cronjob_bandit23.sh". We can read it easily.
+~~~bash
+#!/bin/bash
+
+myname=$(whoami)
+mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
+
+echo "Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget"
+
+cat /etc/bandit_pass/$myname > /tmp/$mytarget
+~~~
+This script take username, and create mytarget variable. We can recreate it by executing this command manually replacing $myname with bandit23. And now we know where to look for bandit23 password.
+
+![image missing?](./content/bandit23.png)
+
+## Bandit 23 -> Bandit 24
+This time we need to write our own shell script. But first, lest examine the last cron script - "/usr/bin/cronjob_bandit24.sh". 
+~~~bash
+#!/bin/bash
+
+myname=$(whoami)
+
+cd /var/spool/$myname/foo
+echo "Executing and deleting all scripts in /var/spool/$myname/foo:"
+for i in * .*;
+do
+    if [ "$i" != "." -a "$i" != ".." ];
+    then
+        echo "Handling $i"
+        owner="$(stat --format "%U" ./$i)"
+        if [ "${owner}" = "bandit23" ]; then
+            timeout -s 9 60 ./$i
+        fi
+        rm -f ./$i
+    fi
+done
+~~~
+This script will execute every script owned by bandit23 from /var/spool/bandit24/foo directory. Lets do the following:
+- create tmp directory (mktemp -d) and cd into it,then set 777 (i know, its not secure but who cares in CTF) perm for this directory, otherwise script wont be able to create file in it,
+- create script that will copy bandit24 password into new file in tmp directory,
+- type "chmod +x script.sh" and copy it into /var/spool/bandit24/foo director,
+- and thats it, we will wait for executing this by cron.
+
+~~~bash
+#!/bin/bash
+cat /etc/bandit_pass/bandit24 >> /tmp/your_tmp_directory/password.txt
+~~~
+
+Password will be in password.txt file in your tmp directory.
+
+
+
+
 
 
 
