@@ -24,6 +24,9 @@ You definitelly should try to beat this game at your own. Use this writeup only 
 - [Level 17](#level-17---level-18)
 - [Level 18](#level-18---level-19)
 - [Level 19](#level-19---level-20)
+- [Level 20](#level-20---level-21)
+- [Level 21](#level-21---level-22)
+- [Level 22](#level-22---level-23)
 
 
 ## Level 0
@@ -221,18 +224,18 @@ There are 5 open ports. Now we have to find out which one is using TLS/SSL encry
 
 Second one returned RSA key, which we will use to login into bandit17 account. Just like on one of previous challenges. Copy whole output into file on your local machine, name it bandit18.private and set 600 permissions using chmod.
 
-## Bandit 17 -> Bandit 18
+## Level 17 -> Level 18
 Description says, that our password is the only line that have been change between passwords.old and passwords.new files. Using "diff" tool will be very usefull.
 
 ![image missing?](./content/bandit18.png)
 
-## Bandit 18 -> Bandit 19
+## Level 18 -> Level 19
 In this challenge, password sould be in readme file. However, we are immediately logged out if we try to login using ssh. We know which file we need to read, so lets try execute command through ssh instead of loging in. To do this, simply add command that you want to exetute right after ssh flags.
 
 ![image missing?](./content/bandit19.png)
 
 It worked!
-## Bandit 19 -> Bandit 20
+## Level 19 -> Level 20
 To obtain the password, we need to use setuid binary on /etc/bandit_pass directory. First, we have to execute binary without arguments to find out how to use it. We want to print bandit20 file from /etc/bandit_pass directory, so we can do it as bandit20 user if we use bandit20-do script. 
 
 ~~~bash
@@ -241,17 +244,17 @@ To obtain the password, we need to use setuid binary on /etc/bandit_pass directo
 
 ![image missing?](./content/bandit20.png)
 
-## Bandit 20 -> Bandit 21
+## Level 20 -> Level 21
 [Tmux](https://www.redhat.com/en/blog/introduction-tmux-linux) is extreme usefull to solve this challenge. Use it to split terminal view. This time binary read password from port that we specify, and if it match bandit20 password, it will return bandit21 credential. Lest begin with opening netcat server at port 25252 using "nc -lp 25252". Then from second terminal, use provided binary with 25252 parameter. Back to netcat, paste bandit20 password and press ENTER. Thats all.
 
 ![image missing?](./content/bandit21.png)
 
-## Bandit 21 -> Bandit 22
+## Level 21 -> Level 22
 In this task we have to investigate cron, and find out which command is being executed. You can do this by viewing config files. I used "cat /etc/cron.d/* | grep \*", to firstly check which one is being executed in regular intervals. There is one script that looks interesting - "/usr/bin/cronjob_bandit22.sh". Opening it reveal, that bandit22 password is stored in one of files in /tmp directory. And there it is - bandit22 password.
 
 ![image missing?](./content/bandit22.png)
 
-## Bandit 22 -> Bandit 23
+## Level 22 -> Level 23
 From previous task we know, that there is another script - "/usr/bin/cronjob_bandit23.sh". We can read it easily.
 ~~~bash
 #!/bin/bash
@@ -267,7 +270,7 @@ This script take username, and create mytarget variable. We can recreate it by e
 
 ![image missing?](./content/bandit23.png)
 
-## Bandit 23 -> Bandit 24
+## Level 23 -> Level 24
 This time we need to write our own shell script. But first, lest examine the last cron script - "/usr/bin/cronjob_bandit24.sh". 
 ~~~bash
 #!/bin/bash
