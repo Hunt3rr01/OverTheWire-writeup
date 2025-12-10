@@ -27,9 +27,8 @@ You definitelly should try to beat this game at your own. Use this writeup only 
 - [Level 20](#level-20---level-21)
 - [Level 21](#level-21---level-22)
 - [Level 22](#level-22---level-23)
-- [Level 22](#level-23---level-24)
-- [Level 22](#level-24---level-25)
-- 
+- [Level 23](#level-23---level-24)
+- [Level 24](#level-24---level-25)
 
 ## Level 0
 Your task is to connect to the remore host using SSH protocol. Address, port and credentials are provided in level description.
