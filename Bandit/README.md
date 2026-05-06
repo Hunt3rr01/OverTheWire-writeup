@@ -336,21 +336,20 @@ cat results.txt | grep -v Wrong
 ## Level 25 -> Level 26
 "The shell for user bandit26 is not /bin/bash, but something else. Find out what it is, how it works and how to break out of it"
 
-We can find out which shell is each user using by viewing content of the /etc/passwd file. Lets try using cat alongside grep.
+We can find out which shell is each user using by viewing content of the /etc/passwd file. Lets try using cat with grep.
 
-Now we know that bandit26 use this "showtext" shell. But is it really shell? Lets check it by typing file command. 
+Now we know that bandit26 uses "showtext" shell. But is it really shell? Lets check it by using file command. We cen see that this is a shell script, so let's check what does it does. 
 
-We should find this "text.txt" file at bandit26 home directory. It't right there, but we dont have permiccions. 
-However, we will find something interesting in our current directory - its a bandit26 ssh key. Lets save it on your machine and lets try to login into bandit26. Unluckily - connection is immediatly closed. 
+The script execute "more" comment with "text.txt" file from bandit26 home directory. It't right there, but we dont have permiccions. 
+However, we will find something interesting in our current directory - its a bandit26 ssh key. Lets save it on your machine and lets try to login into bandit26. Unluckily - connection is immediately closed. 
 
-Lets take a closer look at showtext file. It execute more command. Can we stop it? Of course!You have to make your sheal really small, and magic will start happening. 
+Lets take a closer look at "showtext" file. It execute "more" command. Can we stop it? Of course! You have to make your shell window really small, and magic will start happening. 
 
 When you will see that "More XX%" information, you should press "v" on your keyboard to open VI text editor.
 ![image missing?](./content/bandit26.png)
 
-
 Firstly, execute ":set shell=/bin/bash", and then ":shell". 
-You should now have access to bash SHELL on bandit26
+You should now have access to bash SHELL on bandit26.
 
 
 ## Lebel 26 -> 27
@@ -359,4 +358,5 @@ We have to hurry up and gram bandit27 password. It's really easy. We have "bandi
 ./bandit27-do cat /etc/bandit_pass/bandit27
 ~~~
 And thats it.
+
 ![image missing?](./content/bandit27.png)
